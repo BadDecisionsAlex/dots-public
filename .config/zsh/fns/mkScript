@@ -1,0 +1,86 @@
+# <<IGNORE Extended Shebangs>>
+
+function mkScript ()
+{
+  local name=${1:-$(read -e "?Name> ")}
+  # See if that file already exists.
+  [ -f ${name} ] && { echo ${name}' exists! Giving up'; return 1; }
+
+  local ft=${${name:e}:-$(read -e "?Vim Filetype> ")}
+
+  local body=  # To be filled in switch case
+
+  # Try to correct mismatches Vim's Filetypes and common file extensions, and
+  # handle a few custom script formats.
+  case ${ft} in
+
+  hs|haskell )                                                        # Haskell
+      # Don't expand variables here.
+      read -r -d '' body << 'END'
+#! /usr/bin/env sh
+PACKS='pkgs.haskellPackages.ghcWithPackages'
+MODULES='[
+  pretty-simple turtle
+]'
+exec nix-shell -p "${PACKS} (hps: with hps; ${MODULES})" \
+  --run runhaskell "$@"
+-- <<END Extended Shebang>>
+
+main = print "Hello, World!"
+
+{- vim: set filetype=haskell : -}
+END
+  ;;
+
+  py|python* )                                                         # Python
+    local version=${(M)${ft#python}%%(2|3)} # Try version by stripping `ft`
+    if [[ ${ft} == py || -z ${version} ]]; then
+      # Read the user's default to offer it at the prompt.
+      version=`python --version 2>&1 | \
+        sed 's/^Python \([[:digit:]]\)\(\.\|[[:digit:]]\)*$/ (default: \1)/g' \
+        || echo '3'`
+      # Force to be 2, 3, or NULL
+      version=${(M)version%%(2|3)}
+      read "version?Optional: Python Version (2|3)${version}> "
+    fi
+    # Force to be 2 or 3, defaulting to 3
+    version=python${${(M)version%%(2|3)}:-3}
+    ft=python
+    local packs="pkgs.${version}7Packages"
+
+    # You need to escape manually we can take in the python version.
+    read -r -d '' body << END
+#! /usr/bin/env nix-shell
+#! nix-shell -i ${version} -p "[${version}] ++ (with ${packs}; [ fn ])"
+# <<END Extended Shebang>>
+
+print("Hello, World!")
+
+# vim: set filetype=${ft} :
+END
+  ;;
+
+  * )                                                              # Zsh and Sh
+    shell=${${(M)ft%%(zsh|sh)}:-sh} # default to `sh`
+    read -r -d '' body << END
+#! /usr/bin/env ${shell}
+
+echo 'Hello, World!'
+
+# vim: ft=${ft}
+END
+  ;;
+  esac
+
+  # Write the file.
+  echo ${body} > ${name}
+  chmod +x ${name}
+  ${EDITOR} ${name}
+
+}
+
+
+
+
+# Requires extra lines to prevent generated modeline from catching in this file.
+# vim: set filetype=zsh :

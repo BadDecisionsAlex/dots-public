@@ -1,0 +1,8 @@
+chpwd() {
+  emulate -L zsh
+  ls -v --color=auto
+  [[ $PWD != $HOME ]] && echo $PWD > ~/.latestdir
+  [[ -e .localenv.zsh ]] && source .localenv.zsh
+}
+
+# vim: set filetype=zsh :

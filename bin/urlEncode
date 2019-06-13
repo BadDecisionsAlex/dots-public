@@ -1,0 +1,7 @@
+#! /usr/bin/env nix-shell
+#! nix-shell -i python3 -p python3
+
+import sys, urllib as ul
+print (ul.quote_plus (sys.argv[1]))
+
+# vim: set filetype=python :
