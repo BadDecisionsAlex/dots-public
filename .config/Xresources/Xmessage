@@ -1,0 +1,12 @@
+
+Xmessage*buttons:               Ok
+Xmessage.defaultButton:         Ok
+!Xmessage.Scrollbar:            Always
+!Xmessage*Scroll:               Always
+Xmessage*scrollVertical:        Always
+Xmessage*Scrollbar.width:       12
+Xmessage*Scrollbar.borderWidth: 0
+Xmessage*borderColor:           #99c7ff
+Xmessage*geometry:              +200+200
+
+! vim: ft=xdefaults

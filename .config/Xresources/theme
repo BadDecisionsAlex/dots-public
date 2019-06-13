@@ -1,0 +1,43 @@
+!! URxvt ------------------------------------------------------------- {{{
+URxvt*font: xft:Hack:size=13
+URxvt*internalBorder: 12
+! URxvt Colors
+URxvt*borderColor: #181512
+URxvt*colorBD: #FFFFFF
+URxvt*cursorColor: #839496
+URxvt*cursorColor2: #86458B
+!! End URxvt --------------------------------------------------------- }}}
+
+!! Colors ------------------------------------------------------------ {{{
+! Colors
+*foreground: #FBF0D2
+*background: #181512
+! Black
+*color0: #282828
+*color8: #454545
+! Red
+*color1: #E93C93
+*color9: #A87181
+! Green
+*color2: #00A17C
+*color10: #76A571
+! Yellow
+*color3: #F79031
+*color11: #D0A845
+! Blue
+*color4: #00C0CE
+*color12: #008BA5
+! Magenta
+*color5: #86458B
+*color13: #A0446C
+! Cyan
+!*color6: #8EB173
+!*color14: #007D62
+*cyan6: #00DFDF
+*cyan14: #00FFDF
+! White
+*color7: #D3CAB3
+*color15: #F4F3E2
+!! End Colors -------------------------------------------------------- }}}
+
+! vim: ft=xdefaults

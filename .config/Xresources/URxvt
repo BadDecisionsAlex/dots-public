@@ -1,0 +1,73 @@
+!#include "URxvt-KeyCodes"
+
+!! Various Settings --------------------------------------------------- {{{
+URxvt*loginShell: true
+! Bells
+URxvt*urgentOnBell: true
+URxvt*visualBell: false
+! Scrolling
+URxvt*scrollBar: false
+URxvt*scrollTtyOutput: true
+URxvt*scrollTtyKeypress: true
+URxvt*scrollWithBuffer: true
+URxvt*skipScroll: true
+! These features let you enter hex codes for characters, but the mappings are
+! used for a million other things. Youll never use this...
+!URxvt*iso14755: false
+!URxvt*iso14755_52: false
+!URxvt*termName: rxvt-unicode-256color
+!URxvt*termName: rxvt-unicode
+! --------------------------------------------------------------------- }}}
+
+!! Perl Extensions ---------------------------------------------------- {{{
+URxvt.perl-lib: /home/camus/.local/share/urxvt/perls/
+URxvt.perl-ext-common: default,clipboard,keyboard-select,url-select,selection-to-clipboard,vtwheel
+!--------------------------------------------------------------------- }}}
+
+!! Copy and Pasting --------------------------------------------------- {{{
+URxvt.clipboard.autocopy: true
+URxvt.clipboard.copyCommand: xclip -i -selection clipboard
+URxvt.clipboard.pasteComman: xclip -o -selection clipboard
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+!--------------------------------------------------------------------- }}}
+
+!! URL launcher ------------------------------------------------------ {{{
+!
+! Use Meta-u to activate URL selection mode, then use the following keys:
+!
+!    j/k:      Select next downward/upward URL (also with arrow keys)
+!    g/G:      Select first/last URL (also with home/end key)
+!    o/Return: Open selected URL in browser, Return: deactivate afterwards
+!    y:        Copy (yank) selected URL and deactivate selection mode
+!    q/Escape: Deactivate URL selection mode
+
+URxvt.url-select.launcher:  chromium
+URxvt.url-select.button:    1
+URxvt.keysym.M-u:           perl:url-select:select_next
+URxvt.url-select.underline: true
+!--------------------------------------------------------------------- }}}
+
+!! Keyboard Select Extension ----------------------------------------- {{{
+!
+! Use Meta-Escape to activate selection mode, then use the following keys:
+!
+!   h/j/k/l:    Move cursor left/down/up/right (also with arrow keys)
+!   g/G/0/^/$/H/M/L/f/F/;/,/w/W/b/B/e/E: More vi-like cursor movement keys
+!   '/'/?:      Start forward/backward search
+!   n/N:        Repeat last search, N: in reverse direction
+!   Ctrl-f/b:   Scroll down/up one screen
+!   Ctrl-d/u:   Scroll down/up half a screen
+!   v/V/Ctrl-v: Toggle normal/linewise/blockwise selection
+!   y/Return:   Copy selection to primary buffer, Return: quit afterwards
+!   Y:          Copy selected lines to primary buffer or cursor line and
+!                quit
+!   q/Escape:   Quit keyboard selection mode
+!!
+URxvt.keysym.M-Escape:   perl:keyboard-select:activate
+! Copy selection to clipboard as well
+URxvt.keyboard-select.clipboard: true
+!-------------------------------------------------------------------- }}}
+
+! vim: ft=xdefaults

@@ -1,0 +1,3 @@
+#include "Xft"
+#include "URxvt"
+#include "theme"
