@@ -24,7 +24,7 @@ bindkey '^[[C'  forward-char
 bindkey '^[[2~' overwrite-mode
 
 # Autoload anything in XDG's Zsh `fns` subfolder.
-MY_ZSH_DIR="${HOME}/.config/zsh"
+export MY_ZSH_DIR="${HOME}/.config/zsh"
 
 if [[ -d ${MY_ZSH_DIR}/fns ]]; then
   fpath+=(${MY_ZSH_DIR}/fns)

@@ -16,8 +16,9 @@ Running this script will save a backup of your existing configs, and then
 install this set of configurations. If you want to restore any of your old
 files you can find them in the `.dots-backup` folder.
 
-```sh
-#! /usr/bin/env sh
+```zsh
+#! /usr/bin/env zsh
+# -*- mode: sh; sh-shell: zsh; -*-
 # dot-setup.sh
 
 # usage: ./dot-setup.sh [OPTIONS]
@@ -63,35 +64,42 @@ function dots {
 dots checkout;
 
 # Save backups if required.
-if [ $? = 0 ]; then
+if [[ $? = 0 ]]; then
   echo "Checked out 'dot-files' successfully!";
+elif [[ ${DO_BACKUP} = 1  ]]; then
+  echo "Backing up pre-existing dot files.";
+  
+  # Move conflicting files so that they aren't overwritten.
+  mkdir -p "${BACKUP_DIR}";
+  
+  config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
+    xargs -I{} mv {} "${BACKUP_DIR}"/{};
+  
+  # Checkout again.
+  dots checkout;
+  
+  # If we fail again we have an issue...
+  if [[ $? != 0 ]]; then
+    RET=${?}
+    echo "There are still issues with 'git checkout'!";
+    echo "You might need to manually move some files.";
+    echo "If issues persist confirm that path vars are correct.";
+    exit ${RET};
+  fi
 else
-  if [ ${DO_BACKUP} == 1  ]
-    echo "Backing up pre-existing dot files.";
-    
-    # Move conflicting files so that they aren't overwritten.
-    mkdir -p "${BACKUP_DIR}";
-    
-    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
-      xargs -I{} mv {} "${BACKUP_DIR}"/{};
-    
-    # Checkout again.
-    dots checkout;
-    
-    # If we fail again we have an issue...
-    if [ $? != 0 ];
-      RET=${?}
-      echo "There are still issues with 'git checkout'!";
-      echo "You might need to manually move some files.";
-      echo "If issues persist confirm that path vars are correct.";
-      exit ${RET};
-    fi
+  echo "Replacing existing config files with repo contents."
+  dots reset --hard
 fi
 
 # Stop `git` from listing everything under "Home" as "untracked".
 dots config status.showUntrackedFiles no;
 
+# Install Vimplug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs                      \
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+echo "To complete vim setup, launch and execute ':PlugInstall'"
+
 # ---------------------------------------------------------------------------- #
 
-# vim: set filetype=sh :
+# vim: set filetype=zsh :
 ```

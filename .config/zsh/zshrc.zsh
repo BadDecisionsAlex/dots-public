@@ -2,16 +2,16 @@
 # Environment Variables
 ##########################
 
-EDITOR="vim"
-BROWSER="firefox"
-READER="vim -R -c 'set filetype=zsh' -c 'nnoremap q :q<CR>' -"
-DIFF_READER="vim -R -c 'set filetype=diff' -c 'nnoremap q :q<CR>' -"
+export EDITOR="vim"
+export BROWSER="firefox"
+export READER="vim -R -c 'set filetype=zsh' -c 'nnoremap q :q<CR>' -"
+export DIFF_READER="vim -R -c 'set filetype=diff' -c 'nnoremap q :q<CR>' -"
 
-MY_CONF_DIR="${HOME}/.config"
-MY_ZSH_DIR="${MY_CONF_DIR}/zsh"
+export MY_CONF_DIR="${HOME}/.config"
+export MY_ZSH_DIR="${MY_CONF_DIR}/zsh"
 
-MY_ZSHRC="${MY_ZSH_DIR}/zshrc.zsh"
-MY_VIMRC="${HOME}/.vimrc"
+export MY_ZSHRC="${MY_ZSH_DIR}/zshrc.zsh"
+export MY_VIMRC="${HOME}/.vimrc"
 
 
 ##############
@@ -20,6 +20,12 @@ MY_VIMRC="${HOME}/.vimrc"
 autoload -Uz colors && colors
 autoload -Uz promptinit && promptinit
 prompt lambda-pure
+
+
+######################
+# Basic Settings
+###################
+autoload -Uz compinit && compinit
 
 
 ##############
@@ -33,9 +39,7 @@ alias aliases="cat ${MY_ZSHRC}|awk '/^alias/ { split(\$2,a,\"=\"); print a[1] }'
 alias shutdown="for ((i=0;i<14;i++)) { sleep 0.5; printf .; } && shutdown 0"
 alias python="python3"
 
-function dots() {
-  git --git-dir=${HOME}/public/dots --work-tree=${HOME} $@
-}
+function dots() { git --git-dir=${HOME}/.dots --work-tree=${HOME} $@ }
 
 # Functions/Utils
 alias s="sudo"
@@ -96,8 +100,6 @@ alias cdz="cd ${MY_ZSH_DIR}"
 alias cdc="cd ${MY_CONF_DIR}"
 alias hme="cd ${HOME}"
 alias srcd="cd ${HOME}/src"
-alias cdt="cd ${HOME}/src/textbookit"
-alias cdtb="cd ${HOME}/src/textbookit/Bookstore"
 
 # Vim Configs
 # ------------
